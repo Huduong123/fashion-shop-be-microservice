@@ -1,0 +1,21 @@
+spring:
+  # Cấu hình này chỉ áp dụng khi chạy test
+  # Sử dụng H2 database trong bộ nhớ, không cần cài đặt
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      # Tự động tạo bảng khi test bắt đầu và xóa khi kết thúc
+      ddl-auto: create-drop 
+  
+  # Rất quan trọng: Tắt Flyway trong môi trường test
+  # vì chúng ta không muốn chạy migration script của MySQL trên H2
+  flyway:
+    enabled: false
+jwt:
+  secret: "DayLaMotChuoiBiMatDuDaiDeTestMaHoaBase64="
