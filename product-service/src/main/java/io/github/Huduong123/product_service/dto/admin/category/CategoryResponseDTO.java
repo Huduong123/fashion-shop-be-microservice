@@ -1,0 +1,66 @@
+package io.github.Huduong123.product_service.dto.admin.category;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import io.github.Huduong123.product_service.entity.enums.CategoryStatus;
+import io.github.Huduong123.product_service.entity.enums.CategoryType;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class CategoryResponseDTO {
+
+    private Long id;
+    private String name;
+    private String slug;
+    private String description;
+    private CategoryType type;
+    private CategoryStatus status;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    // Parent category information
+    private Long parentId;
+    private String parentName;
+
+    // Children categories (basic info only to avoid deep nesting)
+    private List<CategorySummaryDTO> children;
+
+    // Level in hierarchy (0 for root, 1 for first level child, etc.)
+    private Integer level;
+
+    // Total number of children
+    private Integer childrenCount;
+
+    // Constructor without children (for simple responses)
+    public CategoryResponseDTO(Long id, String name, String slug, String description, CategoryType type,
+            CategoryStatus status,
+            LocalDateTime createdAt, LocalDateTime updatedAt,
+            Long parentId, String parentName) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+        this.description = description;
+        this.type = type;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.parentId = parentId;
+        this.parentName = parentName;
+    }
+
+    // Inner class for basic category summary
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CategorySummaryDTO {
+        private Long id;
+        private String name;
+        private String description;
+        private Integer childrenCount;
+    }
+}

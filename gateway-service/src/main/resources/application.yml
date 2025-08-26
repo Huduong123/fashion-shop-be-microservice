@@ -1,0 +1,31 @@
+server:
+    port: 8080
+
+spring:
+    application:
+        name: gateway-service
+    cloud:
+        gateway:
+            discovery:
+                locator:
+                    enabled: true
+            routes:
+                # Định tuyến đến product-service
+                - id: product-service-route
+                  uri: lb://product-service
+                  predicates:
+                    - Path=/api/v1/product/**
+                # Định tuyến cho user-service
+                - id: user-service-route
+                  uri: lb://user-service
+                  predicates:
+                    - Path=/api/v1/user/**
+
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+        instance:
+            hostname: ${EUREKA_INSTANCE_HOSTNAME:localhost}
+            
+
