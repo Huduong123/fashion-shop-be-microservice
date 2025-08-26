@@ -1,0 +1,39 @@
+package io.github.Huduong123.product_service.dto.admin.product;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.github.Huduong123.product_service.entity.enums.ProductVariantStatus;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+
+public class ProductVariantUpdateDTO {
+
+    private Long id; // QUAN TRỌNG: Dùng để xác định biến thể cần cập nhật
+
+    @NotNull(message = "Color ID không được để trống")
+    private Long colorId;
+
+    @NotNull(message = "Danh sách size không được để trống")
+    @Size(min = 1, message = "Biến thể phải có ít nhất 1 size")
+    @Valid
+    private List<ProductVariantSizeUpdateDTO> sizes = new ArrayList<>();
+
+    private String imageUrl; // Keep for backward compatibility
+
+    private ProductVariantStatus status;
+
+    // List of variant images
+    @Valid
+    private List<ProductVariantImageDTO> images = new ArrayList<>();
+
+}

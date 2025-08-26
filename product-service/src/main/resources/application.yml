@@ -1,13 +1,11 @@
 server:
-    port: 8081
-
+    port: 8082
 spring:
     application:
-        name: user-service
-
+        name: product-service
 
     datasource:
-        url: ${USER_DATABASE_URL_LOCAL}
+        url: ${PRODUCT_DATABASE_URL_LOCAL}
         username: ${DATABASE_USERNAME_LOCAL}
         password: ${DATABASE_PASSWORD_LOCAL}
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -22,12 +20,11 @@ spring:
         locations: classpath:db/migration
         validate-on-migrate: false
         baseline-on-migrate: true
-
+    
     servlet:
         multipart:
             max-file-size: 5MB
             max-request-size: 10MB
-
 
 jwt:
   secret: ${JWT_SECRET}
@@ -35,12 +32,13 @@ jwt:
 app:
   upload:
     dir: ${UPLOAD_DIR:uploads}
-    url: ${UPLOAD_URL:http://localhost:8081/uploads}
+    url: ${UPLOAD_URL:http://localhost:8082/uploads}
 
 logging:
   level:
     org.springframework.security: DEBUG
     org.springframework.core.env: TRACE
+
 
 eureka:
     client:
