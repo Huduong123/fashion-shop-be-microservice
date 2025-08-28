@@ -21,7 +21,7 @@ import io.github.Huduong123.product_service.service.admin.SizeService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin/sizes")
+@RequestMapping("/api/v1/product/admin/sizes")
 public class SizeController {
 
     private final SizeService sizeService;

@@ -21,7 +21,7 @@ import io.github.Huduong123.product_service.service.admin.ColorService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin/colors")
+@RequestMapping("/api/v1/product/admin/colors")
 public class ColorController {
 
     private final ColorService colorService;

@@ -1,6 +1,8 @@
 package io.github.Huduong123.user_service.controller.admin;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,17 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import io.github.Huduong123.user_service.dto.auth.AdminLoginDTO;
 import io.github.Huduong123.user_service.dto.auth.AdminLoginResponseDTO;
 import io.github.Huduong123.user_service.security.JwtUtil;
 import io.github.Huduong123.user_service.service.auth.UserAuthService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/v1/user/auth/admin")
 public class AdminAuthController {
 
     private final UserAuthService userAuthService;
@@ -54,8 +54,6 @@ public class AdminAuthController {
 
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 token = authHeader.substring(7);
-            } else if (authHeader != null) {
-                token = authHeader;
             }
 
             if (token != null && jwtUtil.validateToken(token)) {

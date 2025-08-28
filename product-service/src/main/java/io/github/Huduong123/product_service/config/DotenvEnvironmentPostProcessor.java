@@ -20,7 +20,10 @@ public class DotenvEnvironmentPostProcessor implements EnvironmentPostProcessor 
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-
+        // DÒNG DEBUG QUAN TRỌNG NHẤT
+        System.out.println("======================================================");
+        System.out.println("====== DotenvEnvironmentPostProcessor is RUNNING! ======");
+        System.out.println("======================================================");
         // Tải tệp .env
         Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 

@@ -10,16 +10,22 @@ spring:
                 locator:
                     enabled: true
             routes:
-                # Định tuyến đến product-service
-                - id: product-service-route
-                  uri: lb://product-service
-                  predicates:
-                    - Path=/api/v1/product/**
                 # Định tuyến cho user-service
                 - id: user-service-route
                   uri: lb://user-service
                   predicates:
                     - Path=/api/v1/user/**
+                  filters:
+                    # Giữ lại tiền tố /api/v1/user khi chuyển tiếp
+                    - RewritePath=/api/v1/user/(?<segment>.*), /api/v1/user/$\{segment}
+                # Định tuyến cho product-service
+                - id: product-service-route
+                  uri: lb://product-service
+                  predicates:
+                    - Path=/api/v1/product/**
+                  filters:
+                    # Giữ lại tiền tố /api/v1/product khi chuyển tiếp
+                    - RewritePath=/api/v1/product/(?<segment>.*), /api/v1/product/$\{segment}
 
 eureka:
     client:
@@ -27,5 +33,11 @@ eureka:
             defaultZone: ${EUREKA_SERVER_URL}
         instance:
             hostname: ${EUREKA_INSTANCE_HOSTNAME}
-            
 
+jwt:
+  secret: ${JWT_SECRET}
+
+logging:
+  level:
+    io.github.Huduong123.gateway_service.security: DEBUG
+    org.springframework.security: DEBUG

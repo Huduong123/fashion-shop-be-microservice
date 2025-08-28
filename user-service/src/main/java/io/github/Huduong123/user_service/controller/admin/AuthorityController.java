@@ -1,20 +1,27 @@
 package io.github.Huduong123.user_service.controller.admin;
 
-import jakarta.validation.Valid;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.github.Huduong123.user_service.dto.admin.authorities.AuthorityCreateDTO;
 import io.github.Huduong123.user_service.dto.admin.authorities.AuthorityResponseDTO;
 import io.github.Huduong123.user_service.dto.admin.authorities.AuthorityUpdateDTO;
 import io.github.Huduong123.user_service.service.admin.AuthorityService;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin/authorities")
+@RequestMapping("/api/v1/user/admin/authorities")
 public class AuthorityController {
 
     private final AuthorityService authorityService;
