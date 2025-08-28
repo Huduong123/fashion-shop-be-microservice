@@ -32,16 +32,9 @@ public class SecurityConfig {
     }
 
     private static final String[] PUBLIC_ENDPOINTS = {
-            "/api/users/login",
-            "/api/users/register",
-            "/api/admin/login",
-        //     "/api/users/products/**",
-        //     "/api/users/categories/**", // Public endpoints cho user xem categories
-        //     "/api/users/colors/**", // Public endpoints cho user xem colors
-        //     "/api/users/sizes/**", // Public endpoints cho user xem sizes
-        //     "/api/users/payment-methods/**",
-        //     "/uploads/**",
-
+            "/api/v1/user/auth/login",
+            "/api/v1/user/auth/register",
+            "/api/v1/user/auth/admin/login",
     };
 
     @Bean
@@ -52,16 +45,22 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll() // Cho phép truy cập công khai đến các endpoint
-                                                                       // này
+                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
 
-                        .requestMatchers("/api/admin/accounts/**").hasRole("SYSTEM")
-                        .requestMatchers("/api/admin/**").hasAnyRole("ADMIN", "SYSTEM")
-                        .requestMatchers("/api/admin/payment-methods/**").hasAnyRole("ADMIN", "SYSTEM")
-                        .requestMatchers("/api/user/profile/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/users/cart/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/api/users/orders/**").hasRole("USER")
-                        .anyRequest().authenticated() // Tất cả các request khác yêu cầu xác thực
+                        // QUY TẮC 2: Áp dụng các quy tắc cụ thể cho các path con của /admin.
+                        .requestMatchers("/api/v1/user/admin/accounts/**").hasRole("SYSTEM")
+                        .requestMatchers("/api/v1/user/admin/payment-methods/**").hasAnyRole("ADMIN", "SYSTEM")
+    
+                        // QUY TẮC 3: Áp dụng quy tắc chung cho tất cả các path /admin còn lại.
+                        .requestMatchers("/api/v1/user/admin/**").hasAnyRole("ADMIN", "SYSTEM")
+    
+                        // QUY TẮC 4: Các quy tắc cho user thường.
+                        .requestMatchers("/api/v1/user/profile/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/v1/user/cart/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/api/v1/user/orders/**").hasRole("USER")
+    
+                        // QUY TẮC 5: Tất cả các request khác đều cần xác thực.
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint) // Xử lý các lỗi xác thực (ví dụ: thiếu

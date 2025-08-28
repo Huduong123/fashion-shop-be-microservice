@@ -30,7 +30,7 @@ import jakarta.validation.Valid;
 
 // NOTE: Chỉ tài khoản có ROLE_SYSTEM mới truy cập được các API này (xem SecurityConfig)
 @RestController
-@RequestMapping("/api/admin/accounts")
+@RequestMapping("/api/v1/user/admin/accounts")
 public class AccountController {
     private final AccountService accountService;
 

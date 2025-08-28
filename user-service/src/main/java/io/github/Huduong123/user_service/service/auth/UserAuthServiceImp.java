@@ -1,4 +1,5 @@
 package io.github.Huduong123.user_service.service.auth;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -47,32 +48,34 @@ public class UserAuthServiceImp implements UserAuthService {
         this.userValidationService = userValidationService;
     }
 
-@Override
-@Transactional
-public UserLoginResponseDTO login(UserLoginDTO userLoginDTO) {
-    // Tìm kiếm người dùng nhưng không ném lỗi ngay lập tức
-    Optional<User> userOptional = userValidationService.findByUsername(userLoginDTO.getUsername());
+    @Override
+    @Transactional
+    public UserLoginResponseDTO login(UserLoginDTO userLoginDTO) {
+        // Tìm kiếm người dùng nhưng không ném lỗi ngay lập tức
+        Optional<User> userOptional = userValidationService.findByUsername(userLoginDTO.getUsername());
 
-    // Nếu không tìm thấy người dùng hoặc mật khẩu không khớp, ném ra cùng một lỗi
-    if (userOptional.isEmpty() || !userValidationService.isPasswordMatch(userLoginDTO.getPassword(), userOptional.get().getPassword())) {
-        throw new AuthenticationFailedException("Tài khoản hoặc mật khẩu không chính xác.");
+        // Nếu không tìm thấy người dùng hoặc mật khẩu không khớp, ném ra cùng một lỗi
+        if (userOptional.isEmpty() || !userValidationService.isPasswordMatch(userLoginDTO.getPassword(),
+                userOptional.get().getPassword())) {
+            throw new AuthenticationFailedException("Tài khoản hoặc mật khẩu không chính xác.");
+        }
+
+        User user = userOptional.get();
+        validateEnabled(user); // Vẫn kiểm tra xem tài khoản có bị vô hiệu hóa không
+
+        // Lấy danh sách roles của user
+        List<String> roles = user.getAuthorities().stream()
+                .map(Authority::getAuthority)
+                .collect(Collectors.toList());
+
+        // Tạo token với cả username và roles
+        String rawToken = jwtUtil.generateToken(user.getUsername(), roles);
+        String bearerToken = "Bearer " + rawToken; // Thêm Bearer prefix
+        UserResponseDTO userReponseDTO = userMapper.converToDTO(user);
+
+        // Trả về DTO chứa Bearer token, username và roles
+        return new UserLoginResponseDTO(bearerToken, userReponseDTO);
     }
-
-    User user = userOptional.get();
-    validateEnabled(user); // Vẫn kiểm tra xem tài khoản có bị vô hiệu hóa không
-
-    // Lấy danh sách roles của user
-    List<String> roles = user.getAuthorities().stream()
-            .map(Authority::getAuthority)
-            .collect(Collectors.toList());
-
-    // Tạo token với cả username và roles
-    String token = jwtUtil.generateToken(user.getUsername(), roles);
-    UserResponseDTO userReponseDTO = userMapper.converToDTO(user);
-
-    // Trả về DTO chứa token, username và roles
-    return new UserLoginResponseDTO(token, userReponseDTO);
-}
 
     @Override
     @Transactional
@@ -102,10 +105,11 @@ public UserLoginResponseDTO login(UserLoginDTO userLoginDTO) {
                 .collect(Collectors.toList());
 
         // Tạo token với cả username và roles
-        String token = jwtUtil.generateToken(user.getUsername(), roles);
+        String rawToken = jwtUtil.generateToken(user.getUsername(), roles);
+        String bearerToken = "Bearer " + rawToken; // Thêm Bearer prefix
 
-        // Trả về DTO chứa token, username, message và roles
-        return new AdminLoginResponseDTO(token, user.getUsername(), "Login successful", roles);
+        // Trả về DTO chứa Bearer token, username, message và roles
+        return new AdminLoginResponseDTO(bearerToken, user.getUsername(), "Login successful", roles);
     }
 
     private void validateEnabled(User user) {
@@ -116,11 +120,13 @@ public UserLoginResponseDTO login(UserLoginDTO userLoginDTO) {
             throw new IllegalArgumentException("Account is disabled");
         }
     }
-private void validatePasswordInvalid(String rawPassword, User user) {
-    if (!userValidationService.isPasswordMatch(rawPassword, user.getPassword())) {
-        throw new IllegalArgumentException("Invalid password");
+
+    private void validatePasswordInvalid(String rawPassword, User user) {
+        if (!userValidationService.isPasswordMatch(rawPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid password");
+        }
     }
-} 
+
     private void checkIsAdmin(User user) {
         boolean isAdmin = user.getAuthorities().stream()
                 .anyMatch(
@@ -130,8 +136,6 @@ private void validatePasswordInvalid(String rawPassword, User user) {
             throw new IllegalArgumentException("Access denied. You are not an admin");
         }
     }
-
-
 
     @Override
     @Transactional

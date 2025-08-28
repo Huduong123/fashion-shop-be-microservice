@@ -39,8 +39,9 @@ app:
 
 logging:
   level:
-    org.springframework.security: DEBUG
+    org.springframework.security: DEBUG 
     org.springframework.core.env: TRACE
+    io.github.Huduong123.user_service.security: DEBUG
 
 eureka:
     client:

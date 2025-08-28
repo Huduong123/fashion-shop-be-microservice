@@ -36,6 +36,7 @@ app:
 
 logging:
   level:
+    io.github.Huduong123.product_service.security: DEBUG
     org.springframework.security: DEBUG
     org.springframework.core.env: TRACE
 
