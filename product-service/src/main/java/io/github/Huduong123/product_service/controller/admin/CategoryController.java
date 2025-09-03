@@ -26,7 +26,7 @@ import io.github.Huduong123.product_service.service.admin.CategoryService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin/categories")
+@RequestMapping("/api/v1/product/admin/categories")
 @PreAuthorize("hasRole('ADMIN') or hasRole('SYSTEM')")
 public class CategoryController {
 

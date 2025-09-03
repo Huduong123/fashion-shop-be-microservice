@@ -19,7 +19,7 @@ import io.github.Huduong123.product_service.service.admin.ProductVariantImageSer
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin/product-variants")
+@RequestMapping("/api/v1/product/admin/product-variants")
 public class ProductVariantImageController {
 
     private final ProductVariantImageService imageService;

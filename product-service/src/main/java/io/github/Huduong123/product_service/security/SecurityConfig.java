@@ -27,10 +27,10 @@ public class SecurityConfig {
 
         // Chỉ định nghĩa các endpoint PUBLIC của CHÍNH service này
         private static final String[] PUBLIC_ENDPOINTS = {
-                        "/api/v1/product/colors",
-                        "/api/v1/product/sizes",
-                        "/api/v1/product/categories",
-                        "/api/v1/product/products",
+                        "/api/v1/product/colors/**",
+                        "/api/v1/product/sizes/**",
+                        "/api/v1/product/categories/**",
+                        "/api/v1/product/products/**",
                         "/uploads/**"
         };
 
