@@ -30,7 +30,7 @@ import io.github.Huduong123.product_service.service.admin.ProductService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/admin/products")
+@RequestMapping("/api/v1/product/admin/products")
 public class ProductController {
 
     private final ProductService productService;
