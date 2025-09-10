@@ -1,11 +1,11 @@
 server:
-    port: 8083
+    port: 8084
 spring:
     application:
-        name: cart-service
+        name: order-service
 
     datasource:
-        url: ${CART_DATABASE_URL_LOCAL}
+        url: ${ORDER_DATABASE_URL_LOCAL}
         username: ${DATABASE_USERNAME_LOCAL}
         password: ${DATABASE_PASSWORD_LOCAL}
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -32,11 +32,11 @@ jwt:
 app:
   upload:
     dir: ${UPLOAD_DIR:uploads}
-    url: ${UPLOAD_URL:http://localhost:8083/uploads}
+    url: ${UPLOAD_URL:http://localhost:8084/uploads}
 
 logging:
   level:
-    io.github.Huduong123.cart_service.security: DEBUG
+    io.github.Huduong123.order_service.security: DEBUG
     org.springframework.security: DEBUG
     org.springframework.core.env: TRACE
 
