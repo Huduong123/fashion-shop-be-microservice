@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.github.Huduong123</groupId>
-	<artifactId>cart-service</artifactId>
+	<artifactId>order-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>cart-service</name>
-	<description>Microservice for cart </description>
+	<name>order-service</name>
+	<description>Microservice for order service</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -85,7 +85,7 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+				<dependency>
 			<groupId>io.github.cdimascio</groupId>
 			<artifactId>dotenv-java</artifactId>
 			<version>3.0.0</version> <!-- Hoặc phiên bản mới hơn -->
@@ -95,8 +95,6 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 	</dependencies>
-
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

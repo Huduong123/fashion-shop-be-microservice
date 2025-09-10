@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+io.github.Huduong123.order_service.config.DotenvEnvironmentPostProcessor
