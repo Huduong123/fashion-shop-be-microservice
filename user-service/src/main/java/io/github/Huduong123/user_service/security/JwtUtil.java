@@ -1,4 +1,5 @@
 package io.github.Huduong123.user_service.security;
+
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
@@ -22,10 +23,11 @@ public class JwtUtil {
 
     private final long EXPIRATION_TIME = 86400000; // 24 hours
 
-    public String generateToken(String username, List<String> roles) {
+    public String generateToken(String username, Long userId, List<String> roles) {
         Key key = getSigningKey();
         return Jwts.builder()
                 .setSubject(username)
+                .claim("userId", userId)
                 .claim("authorities", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
@@ -35,11 +37,18 @@ public class JwtUtil {
 
     public String extractUsername(String token) {
         return parseToken(token).getBody().getSubject();
+
     }
+
     @SuppressWarnings("unchecked")
     public List<String> extractRoles(String token) {
         return parseToken(token).getBody().get("authorities", List.class);
     }
+
+    public Long extractUserId(String token) {
+        return parseToken(token).getBody().get("userId", Long.class);
+    }
+
     public boolean validateToken(String token) {
         try {
             parseToken(token);
@@ -58,5 +67,5 @@ public class JwtUtil {
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-    }  
+    }
 }

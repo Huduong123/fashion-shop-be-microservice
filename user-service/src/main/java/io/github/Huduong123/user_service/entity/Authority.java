@@ -1,5 +1,8 @@
 package io.github.Huduong123.user_service.entity;
+
 import org.springframework.security.core.GrantedAuthority;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,8 +25,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString(exclude = "user")
-public class Authority extends BaseEntity implements GrantedAuthority{
-    
+@JsonIgnoreProperties({ "user" })
+public class Authority extends BaseEntity implements GrantedAuthority {
+
     @Column(name = "authority")
     private String authority;
 
@@ -35,5 +39,5 @@ public class Authority extends BaseEntity implements GrantedAuthority{
     public String getAuthority() {
         return authority;
     }
-    
+
 }

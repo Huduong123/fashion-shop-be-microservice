@@ -1,4 +1,5 @@
-package io.github.Huduong123.product_service.security;
+package io.github.Huduong123.cart_service.security;
+
 
 import java.util.Arrays;
 
@@ -27,18 +28,14 @@ public class SecurityConfig {
 
         // Chỉ định nghĩa các endpoint PUBLIC của CHÍNH service này
         private static final String[] PUBLIC_ENDPOINTS = {
-                        "/api/v1/product/colors/**",
-                        "/api/v1/product/sizes/**",
-                        "/api/v1/product/categories/**",
-                        "/api/v1/product/products/**",
-                        "/api/v1/internal/**",
+                        "/api/v1/cart/**",
                         "/uploads/**"
         };
 
         // Định nghĩa các endpoint chỉ ADMIN mới được truy cập
-        private static final String[] ADMIN_ENDPOINTS = {
-                        "/api/v1/product/admin/**"
-        };
+        // private static final String[] ADMIN_ENDPOINTS = {
+        //                 "/api/v1/cart/admin/**"
+        // };
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,7 +48,7 @@ public class SecurityConfig {
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                                .requestMatchers(ADMIN_ENDPOINTS).hasAnyRole("ADMIN", "SYSTEM")
+                                               // .requestMatchers(ADMIN_ENDPOINTS).hasAnyRole("ADMIN", "SYSTEM")
                                                 .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                                                 .anyRequest().authenticated());
                 // Thêm filter của chúng ta vào trước filter mặc định
@@ -62,7 +59,7 @@ public class SecurityConfig {
         @Bean
         public CorsConfigurationSource corsConfigurationSource() {
                 CorsConfiguration configuration = new CorsConfiguration();
-                configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:8082",
+                configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "http://localhost:8082","http://localhost:8083",
                                 "http://localhost:5173", "http://localhost:5174"));
                 configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                 configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));

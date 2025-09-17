@@ -10,6 +10,14 @@ spring:
                 locator:
                     enabled: true
             routes:
+                # Định tuyến cho các API nội bộ (ƯU TIÊN KIỂM TRA TRƯỚC)
+                - id: internal-product-service-route
+                  uri: lb://product-service
+                  predicates:
+                    - Path=/api/v1/internal/**
+                  filters:
+                    - RewritePath=/api/v1/internal/(?<segment>.*), /api/v1/internal/$\{segment}
+                  order: 0
                 # Định tuyến cho user-service
                 - id: user-service-route
                   uri: lb://user-service
@@ -18,6 +26,7 @@ spring:
                   filters:
                     # Giữ lại tiền tố /api/v1/user khi chuyển tiếp
                     - RewritePath=/api/v1/user/(?<segment>.*), /api/v1/user/$\{segment}
+                  order: 1
                 # Định tuyến cho product-service
                 - id: product-service-route
                   uri: lb://product-service
@@ -26,7 +35,21 @@ spring:
                   filters:
                     # Giữ lại tiền tố /api/v1/product khi chuyển tiếp
                     - RewritePath=/api/v1/product/(?<segment>.*), /api/v1/product/$\{segment}
-
+                  order: 1
+                - id: cart-service-route
+                  uri: lb://cart-service
+                  predicates:
+                    - Path=/api/v1/cart/**
+                  filters:
+                    - RewritePath=/api/v1/cart/(?<segment>.*), /api/v1/cart/$\{segment}
+                  order: 1
+                - id: order-service-route
+                  uri: lb://order-service
+                  predicates:
+                    - Path=/api/v1/order/**
+                  filters:
+                    - RewritePath=/api/v1/order/(?<segment>.*), /api/v1/order/$\{segment}
+                  order: 1
 eureka:
     client:
         serviceUrl:

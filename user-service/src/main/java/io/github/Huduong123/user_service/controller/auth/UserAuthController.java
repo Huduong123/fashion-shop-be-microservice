@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.github.Huduong123.user_service.dto.auth.UserLoginDTO;
 import io.github.Huduong123.user_service.dto.auth.UserLoginResponseDTO;
 import io.github.Huduong123.user_service.dto.auth.UserRegisterDTO;
-import io.github.Huduong123.user_service.entity.User;
+import io.github.Huduong123.user_service.dto.auth.UserResponseDTO;
 import io.github.Huduong123.user_service.service.auth.UserAuthService;
 import jakarta.validation.Valid;
 
@@ -36,10 +36,10 @@ public class UserAuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
+    public ResponseEntity<UserResponseDTO> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
         try {
-            User user = userAuthService.register(userRegisterDTO);
-            return ResponseEntity.ok(user);
+            UserResponseDTO userResponse = userAuthService.register(userRegisterDTO);
+            return ResponseEntity.ok(userResponse);
         } catch (Exception e) {
             throw e; // Let GlobalExceptionHandler handle this
         }

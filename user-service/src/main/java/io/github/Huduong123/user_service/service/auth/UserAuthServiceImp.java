@@ -68,8 +68,8 @@ public class UserAuthServiceImp implements UserAuthService {
                 .map(Authority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Tạo token với cả username và roles
-        String rawToken = jwtUtil.generateToken(user.getUsername(), roles);
+        // Tạo token với cả username, userId và roles
+        String rawToken = jwtUtil.generateToken(user.getUsername(), user.getId(), roles);
         String bearerToken = "Bearer " + rawToken; // Thêm Bearer prefix
         UserResponseDTO userReponseDTO = userMapper.converToDTO(user);
 
@@ -104,8 +104,8 @@ public class UserAuthServiceImp implements UserAuthService {
                 .map(Authority::getAuthority)
                 .collect(Collectors.toList());
 
-        // Tạo token với cả username và roles
-        String rawToken = jwtUtil.generateToken(user.getUsername(), roles);
+        // Tạo token với cả username, userId và roles
+        String rawToken = jwtUtil.generateToken(user.getUsername(), user.getId(), roles);
         String bearerToken = "Bearer " + rawToken; // Thêm Bearer prefix
 
         // Trả về DTO chứa Bearer token, username, message và roles
@@ -139,7 +139,7 @@ public class UserAuthServiceImp implements UserAuthService {
 
     @Override
     @Transactional
-    public User register(UserRegisterDTO userRegisterDTO) {
+    public UserResponseDTO register(UserRegisterDTO userRegisterDTO) {
         if (userValidationService.existsByUsername(userRegisterDTO.getUsername())) {
             throw new IllegalArgumentException("Username already exists");
         }
@@ -170,7 +170,7 @@ public class UserAuthServiceImp implements UserAuthService {
         User savedUser = userRepository.save(user);
         authorityRepository.save(authority);
 
-        return savedUser;
+        return userMapper.converToDTO(savedUser);
     }
 
     private void validateUserRegisterDTO(UserRegisterDTO userRegisterDTO) {
