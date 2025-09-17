@@ -30,7 +30,8 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
             "/api/v1/product/colors/**",
             "/api/v1/product/sizes/**",
             "/api/v1/product/categories/**",
-            "/api/v1/product/products/**");
+            "/api/v1/product/products/**",
+            "/api/v1/internal/**");
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -59,10 +60,12 @@ public class AuthenticationFilter implements GlobalFilter, Ordered {
         // Lấy thông tin từ token và thêm vào header cho các service phía sau
         var claims = jwtUtil.getClaims(token);
         String username = claims.getSubject();
+        Long userId = claims.get("userId", Long.class);
         List<String> roles = claims.get("authorities", List.class);
 
         ServerHttpRequest modifiedRequest = request.mutate()
                 .header("X-Auth-Username", username)
+                .header("X-Auth-User-Id", userId.toString())
                 .header("X-Auth-Roles", String.join(",", roles)) // Chuyển list roles thành string
                 .build();
         return chain.filter(exchange.mutate().request(modifiedRequest).build());
