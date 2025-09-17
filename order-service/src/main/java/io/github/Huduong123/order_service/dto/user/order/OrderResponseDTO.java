@@ -4,9 +4,12 @@ import io.github.Huduong123.order_service.entity.enums.OrderStatus;
 import io.github.Huduong123.order_service.entity.enums.PaymentStatus;
 import lombok.Builder;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import io.github.Huduong123.order_service.dto.admin.order.OrderShippingDetailDTO;
 
 @Data
 @Builder
@@ -22,7 +25,7 @@ public class OrderResponseDTO {
     // --- Dữ liệu snapshot ---
     private String paymentMethodName;
     private String paymentMethodCode;
-    private OrderShippingDetailResponseDTO shippingDetail;
+    private OrderShippingDetailDTO shippingDetail;
     
     // --- Chi tiết các sản phẩm ---
     private List<OrderItemResponseDTO> orderItems;
