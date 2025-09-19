@@ -85,14 +85,29 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>io.github.cdimascio</groupId>
 			<artifactId>dotenv-java</artifactId>
-			<version>3.0.0</version> <!-- Hoặc phiên bản mới hơn -->
+			<version>3.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>auth</artifactId>
+		</dependency>
+
+		<!-- BỔ SUNG: Thư viện quản lý khu vực của AWS -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>regions</artifactId>
+		</dependency>
+		<!-- SỬA LỖI: Đảm bảo cú pháp đúng và không cần version -->
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -101,6 +116,15 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- BỔ SUNG 1: Thêm AWS BOM để quản lý phiên bản -->
+			<dependency>
+				<groupId>software.amazon.awssdk</groupId>
+				<artifactId>bom</artifactId>
+				<version>2.26.20</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
