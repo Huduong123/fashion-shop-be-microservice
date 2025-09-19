@@ -20,4 +20,5 @@ public interface PaymentMethodRepository extends JpaRepository<PaymentMethod, Lo
      * Tìm một phương thức thanh toán bằng mã định danh duy nhất của nó.
      */
     Optional<PaymentMethod> findByCode(String code);
+    Optional<PaymentMethod> findByName(String name);
 }
