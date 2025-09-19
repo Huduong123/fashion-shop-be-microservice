@@ -47,3 +47,10 @@ eureka:
             defaultZone: ${EUREKA_SERVER_URL}
     instance:
         hostname: ${EUREKA_INSTANCE_HOSTNAME}
+aws:
+    region: ${AWS_REGION}
+    s3:
+        bucket-name: ${AWS_S3_BUCKET_NAME}
+    credentials:
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
