@@ -1,8 +1,5 @@
 package io.github.Huduong123.user_service.service.user;
 
-
-
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,14 +18,16 @@ import io.github.Huduong123.user_service.mapper.UserAddressMapper;
 import io.github.Huduong123.user_service.repository.UserAddressRepository;
 import io.github.Huduong123.user_service.repository.UserRepository;
 import jakarta.transaction.Transactional;
+
 @Service
-public class UserAddressServiceImp implements  UserAddressService{
+public class UserAddressServiceImp implements UserAddressService {
 
     private final UserAddressMapper userAddressMapper;
     private final UserAddressRepository userAddressRepository;
     private final UserRepository userRepository;
 
-    public UserAddressServiceImp(UserAddressMapper userAddressMapper, UserAddressRepository userAddressRepository, UserRepository userRepository) {
+    public UserAddressServiceImp(UserAddressMapper userAddressMapper, UserAddressRepository userAddressRepository,
+            UserRepository userRepository) {
         this.userAddressMapper = userAddressMapper;
         this.userAddressRepository = userAddressRepository;
         this.userRepository = userRepository;
@@ -51,6 +50,19 @@ public class UserAddressServiceImp implements  UserAddressService{
         return addresses.stream()
                 .map(userAddressMapper::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserAddressDTO findAddressById(Long addressId, String username) {
+        UserAddress address = findUserAddressById(addressId);
+        User user = findUserByUsername(username);
+
+        // Kiểm tra xem địa chỉ này có thuộc về người dùng không
+        if (!address.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException("Bạn không có quyền truy cập địa chỉ này.");
+        }
+
+        return userAddressMapper.convertToDTO(address);
     }
 
     @Override
@@ -99,9 +111,11 @@ public class UserAddressServiceImp implements  UserAddressService{
         }
 
         if (addressToDelete.isDefault()) {
-            throw new IllegalArgumentException("Không thể xóa địa chỉ mặc định. Vui lòng đặt địa chỉ khác làm mặc định trước.");
+            throw new IllegalArgumentException(
+                    "Không thể xóa địa chỉ mặc định. Vui lòng đặt địa chỉ khác làm mặc định trước.");
         }
 
-        return  new ResponseMessageDTO(HttpStatus.OK, "Địa chỉ đã được xóa thành công");
+        userAddressRepository.delete(addressToDelete);
+        return new ResponseMessageDTO(HttpStatus.OK, "Địa chỉ đã được xóa thành công");
     }
 }

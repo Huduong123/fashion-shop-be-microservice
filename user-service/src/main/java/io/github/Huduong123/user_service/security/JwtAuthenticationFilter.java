@@ -44,9 +44,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // Only accept Bearer format - no backward compatibility
             if (authHeader.startsWith("Bearer ")) {
                 jwt = authHeader.substring(7);
-                    username = jwtUtil.extractUsername(jwt);
+                username = jwtUtil.extractUsername(jwt);
             }
-        } 
+        }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             var userOpt = userValidationService.findByUsername(username);
@@ -60,11 +60,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             .collect(Collectors.toList());
 
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            user, null, authorities);
+                            user.getUsername(), null, authorities);
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-            } 
+            }
         }
         filterChain.doFilter(request, response);
     }
