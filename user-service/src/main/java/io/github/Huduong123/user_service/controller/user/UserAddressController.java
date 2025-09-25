@@ -44,11 +44,24 @@ public class UserAddressController {
     }
 
     /**
+     * Lấy một địa chỉ cụ thể của người dùng đang đăng nhập theo ID.
+     * Hệ thống sẽ tự kiểm tra xem địa chỉ này có thuộc về họ không.
+     */
+    @GetMapping("/{addressId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserAddressDTO> getAddressById(@PathVariable Long addressId, Principal principal) {
+        String username = principal.getName();
+        UserAddressDTO address = userAddressService.findAddressById(addressId, username);
+        return ResponseEntity.ok(address);
+    }
+
+    /**
      * Tạo một địa chỉ mới cho người dùng đang đăng nhập.
      */
     @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<UserAddressDTO> createAddress(@Valid @RequestBody UserCreateAddressDTO createAddressDTO, Principal principal) {
+    public ResponseEntity<UserAddressDTO> createAddress(@Valid @RequestBody UserCreateAddressDTO createAddressDTO,
+            Principal principal) {
         String username = principal.getName();
         UserAddressDTO createdAddress = userAddressService.createAddress(createAddressDTO, username);
         return new ResponseEntity<>(createdAddress, HttpStatus.CREATED);
@@ -61,8 +74,8 @@ public class UserAddressController {
     @PutMapping("/{addressId}")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserAddressDTO> updateAddress(@PathVariable Long addressId,
-                                                        @Valid @RequestBody UserUpdateAddressDTO updateAddressDTO,
-                                                        Principal principal) {
+            @Valid @RequestBody UserUpdateAddressDTO updateAddressDTO,
+            Principal principal) {
         String username = principal.getName();
         UserAddressDTO updatedAddress = userAddressService.updateAddress(addressId, updateAddressDTO, username);
         return ResponseEntity.ok(updatedAddress);

@@ -47,6 +47,16 @@ eureka:
             defaultZone: ${EUREKA_SERVER_URL}
     instance:
         hostname: ${EUREKA_INSTANCE_HOSTNAME}
+
+kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        properties:
+            spring.json.add.type.headers: false
+    topic:
+        order-events: order-events
 aws:
     region: ${AWS_REGION}
     s3:
